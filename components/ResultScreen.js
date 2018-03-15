@@ -26,13 +26,13 @@ export default class ResultScreen extends Component {
             isLoaded:false,
             appState:AppState.currentState
                      }
-                     }
-    _handleAppStateChange = (nextAppState) => {
+                      }
+    _handleAppStateChange = async (nextAppState) => {
         this.setState({appState: nextAppState});
         if (nextAppState==='background')
         {
             try {
-                AsyncStorage.setItem('searchState',JSON.stringify(this.state.res));
+                await AsyncStorage.setItem('searchState',JSON.stringify(this.state.res));
             }
             catch (error) {
             //Some error
@@ -41,12 +41,12 @@ export default class ResultScreen extends Component {
         else if (nextAppState==='active') {
             try {
             //await
-                this.setState({res:JSON.parse(AsyncStorage.getItem('searchState'))});
+                this.setState({res:JSON.parse(await AsyncStorage.getItem('searchState'))});
             }
             catch (error) {
             //Some error
             }
-        }
+            }
             };
     componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange);
@@ -63,7 +63,7 @@ export default class ResultScreen extends Component {
             return responseJson.images;
         })
         .catch((error) => {
-            console.error(error);
+        console.error(error);
         });
     }
     componentDidMount() {
